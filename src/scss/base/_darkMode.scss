@@ -1,0 +1,40 @@
+.dark-mode {
+    background-color: darken($darkGrey,10);
+
+    p {
+        color: $white;
+    }
+
+    a, h1, h2, h3, h4 {
+        color: $grey;
+    }
+
+    .advertisement, .sumary-property {
+        background-color: $darkGrey;
+        border: 1px solid $darkGrey;
+
+        .price {
+            color: $green;
+        }
+
+        .icon {
+            filter: invert(100%);    
+        }
+    }
+
+    .aboutUs-text blockquote {
+        color: $white;
+    }
+
+    .form {
+        label, legend, p {
+            color: $grey;
+        }
+        input:not([type="submit"]),
+        textarea, select {
+            background-color: $darkGrey;
+            border: 1px solid $darkGrey;
+            color: $white;
+        }
+    }
+}

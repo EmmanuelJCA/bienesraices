@@ -1,0 +1,26 @@
+.no-webp .contact-section {
+    background-image: url(../img/encuentra.jpg);
+}
+
+.webp .contact-section {
+    background-image: url(../img/encuentra.webp);
+}
+
+.contact-section {
+    background-position: center center;
+    background-size: cover;
+    padding: $separation*2 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h2 {
+        font-size: 4rem;
+        font-weight: $blackFont;
+        color: $white;
+    }
+    p {
+        font-size: 1.8rem;
+        color: $white;
+    }
+}
