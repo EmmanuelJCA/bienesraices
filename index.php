@@ -1,38 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bienes Raices</title>
-    <link rel="stylesheet" href="build/css/app.css">
-</head>
-<body>
-    <header class="header index">
-        <div class="container header-content">
-            <div class="bar">
-                <a href="/">
-                    <img src="build/img/logo.svg" alt="Logotipo de Bienes Raices">
-                </a>
-                
-                <div class="mobile-menu">
-                    <img src="build/img/barras.svg" alt="Icono expandir menu">
-                </div>
-                
-                <div class="rigth">
-                    <img class="dark-mode-button" src="build/img/dark-mode.svg">
-                    <nav class="navigation">
-                        <a href="aboutUs.html">Nosotros</a>
-                        <a href="advertisements.html">Anuncios</a>
-                        <a href="blog.html">Blog</a>
-                        <a href="contact.html">Contacto</a>
-                    </nav>
-                </div>
+<?php
+    require './includes/functions.php';
+    includeTemplate('header', $index = true);
+?>
 
-            </div><!--.bar-->
-            <h1>Venta de Casas y Departamentos Exclusivos de Lujo</h1>
-        </div>
-    </header>
     <main class="container section">
         <h1>Más Sobre Nosotros</h1>
         <div class="us-icons">            
@@ -229,18 +199,6 @@
         </section>
     </div>
 
-    <footer class="footer section">
-        <div class="container footer-container">
-            <nav class="navigation">
-                <a href="aboutUs.html">Nosotros</a>
-                <a href="advertisements.html">Anuncios</a>
-                <a href="blog.html">Blog</a>
-                <a href="contact.html">Contacto</a>
-            </nav>
-        </div>
-
-        <p class="copyright">Todos los derechos Reservados 2022 &copy;</p>
-    </footer>
-    <script src="build/js/bundle.min.js"></script>
-</body>
-</html>
+<?php
+    includeTemplate('footer');
+?>
