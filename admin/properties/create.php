@@ -78,10 +78,10 @@
             }
 
             // Generar un nombre unico
-            $imageName = md5( uniqid( rand(), true) );
+            $imageName = md5( uniqid( rand(), true) )  . ".jpg";
 
             // Subir imagen
-            move_uploaded_file($image['tmp_name'], $imageFolder . $imageName . ".jpg");
+            move_uploaded_file($image['tmp_name'], $imageFolder . $imageName);
 
             //Insertar en la base de datos
             $query = "INSERT INTO propiedades (titulo, precio, imagen, descripcion, habitaciones, wc, estacionamiento, creado, vendedores_id) VALUES ( '$title', '$price', '$imageName', '$description', '$bedrooms', '$wc', '$parking', '$created', '$sellerId')";

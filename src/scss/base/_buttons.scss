@@ -1,7 +1,19 @@
 .yellow-button {
-    @include button($yellow, block);
+    @include button($yellow, inline-block);
+}
+
+.yellow-button-block {
+    @include button($yellow, block)
 }
 
 .green-button {
     @include button($green, inline-block);
+}
+
+.red-button-block {
+    @include button($red, block);
+}
+
+.green-button-block {
+    @include button($green, block);
 }
