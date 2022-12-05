@@ -43,24 +43,30 @@ function imagenes() {
     return src(paths.imagenes)
         .pipe(cache(imagemin({ optimizationLevel: 3 })))
         .pipe(dest('build/img'))
-        .pipe(notify({ message: 'Imagen Completada' }));
+        // .pipe(notify({ message: 'Imagen Completada' }));
 }
 
 function versionWebp() {
     return src(paths.imagenes)
         .pipe(webp())
         .pipe(dest('build/img'))
-        .pipe(notify({ message: 'Imagen Completada' }));
+        // .pipe(notify({ message: 'Imagen Completada' }));
 }
 
 
 function watchArchivos() {
     watch(paths.scss, css);
     watch(paths.js, javascript);
-    watch(paths.imagenes, imagenes);
-    watch(paths.imagenes, versionWebp);
+    // watch(paths.imagenes, imagenes);
+    // watch(paths.imagenes, versionWebp);
 }
 
 exports.css = css;
 exports.watchArchivos = watchArchivos;
-exports.default = parallel(css, javascript, imagenes, versionWebp, watchArchivos); 
+exports.default = parallel(
+    css, 
+    javascript,
+    // imagenes, 
+    // versionWebp, 
+    watchArchivos
+    ); 
