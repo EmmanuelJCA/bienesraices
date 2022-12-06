@@ -12,6 +12,7 @@
 
 .red-button-block {
     @include button($red, block);
+    width: 100%;
 }
 
 .green-button-block {

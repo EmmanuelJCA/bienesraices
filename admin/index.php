@@ -13,6 +13,30 @@
     // Muestra mensaje condicional
     $result = $_GET['result'] ?? null;
 
+    if($_SERVER['REQUEST_METHOD'] === 'POST') {
+       $propertyId = $_POST['id'];
+       $propertyId = filter_var($propertyId, FILTER_VALIDATE_INT);
+
+       if($propertyId) {
+
+        // Eliminar archivo 
+        $query = "SELECT imagen FROM propiedades WHERE id = ${propertyId}";
+
+        $result = mysqli_query($db, $query);
+        $property = mysqli_fetch_assoc($result);
+
+        unlink('../images/' . $property['imagen']);
+
+        // Eliminar propiedad
+          $query = "DELETE FROM propiedades WHERE id = ${propertyId}";
+          $result = mysqli_query($db, $query);
+
+          if($result) {
+             header('Location: /bienesraices/admin/index.php?result=3');
+          }
+       }
+    }
+
     // Incluye un template
     require '../includes/functions.php';
     includeTemplate('header');
@@ -25,6 +49,8 @@
             <p class="alert success">Anuncio Creado Correctamente</p>
         <?php elseif( intval($result) === 2 ): ?>
             <p class="alert success">Anuncio Actualizado Correctamente</p>
+        <?php elseif( intval($result) === 3 ): ?>
+            <p class="alert success">Anuncio Eliminado Correctamente</p>
         <?php endif; ?>
         <a href="properties/create.php" class="button green-button">Nueva Propiedad</a>
     
@@ -48,7 +74,11 @@
                     <td><?php echo $property['precio']; ?>$</td>
                     <td>
                         <a href="properties/update.php?id=<?php echo $property['id']; ?>" class="yellow-button-block">Actualizar</a>
-                        <a href="#" class="red-button-block">Eliminar</a>
+                        
+                        <form method="POST" class="w-100">
+                            <input type="hidden" name="id" value="<?php echo $property['id']; ?>">
+                            <input type="submit" class="red-button-block" value="Eliminar">
+                        </form>
                     </td>
                 </tr>
                 <?php endwhile; ?>
