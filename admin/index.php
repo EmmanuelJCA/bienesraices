@@ -1,5 +1,13 @@
 <?php
 
+    // Verificar si el usuario esta autenticado
+    require '../includes/functions.php';
+    $auth = authenticated();
+
+    if(!$auth) {
+        header('Location: /bienesraices/index.php');
+    }
+
     // Importar conexion
     require '../includes/config/database.php';
     $db = connectDB();
@@ -38,7 +46,6 @@
     }
 
     // Incluye un template
-    require '../includes/functions.php';
     includeTemplate('header');
 ?>
 

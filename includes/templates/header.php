@@ -1,3 +1,13 @@
+<?php
+
+    if(!isset($_SESSION)) {
+        session_start();
+    }
+
+    $auth = $_SESSION['logged'] ?? false;
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,6 +36,9 @@
                         <a href="advertisements.php">Anuncios</a>
                         <a href="blog.php">Blog</a>
                         <a href="contact.php">Contacto</a>
+                        <?php if($auth): ?>
+                            <a href="/bienesraices/logout.php">Cerrar Sesion</a> 
+                        <?php endif; ?>
                     </nav>
                 </div>
 

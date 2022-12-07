@@ -1,5 +1,13 @@
 <?php
 
+    // Verificar si el usuario esta autenticado
+    require '../../includes/functions.php';
+    $auth = authenticated();
+
+    if(!$auth) {
+        header('Location: /bienesraices/index.php');
+    }
+
     // Validar ID
     $propertyId = $_GET['id'];
     $propertyId = filter_var($propertyId, FILTER_VALIDATE_INT);
@@ -120,7 +128,6 @@
         
     }
 
-    require '../../includes/functions.php';
     includeTemplate('header');
 ?>
 
