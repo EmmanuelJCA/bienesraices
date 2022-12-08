@@ -4,8 +4,9 @@
     require '../../includes/app.php';
 
     use App\Property;
+    use Intervention\Image\ImageManagerStatic as Image;
 
-    // authenticated();
+    authenticated();
 
     // Database
     $db = connectDB();
@@ -15,7 +16,7 @@
     $result = mysqli_query($db, $query);
 
     // Arreglo con mensajes de error
-    $error = [];
+    $errors = [];
 
     $title = '';
     $price = '';
@@ -29,74 +30,38 @@
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $property = new Property($_POST);
-        $property->save();
-        exit;
+        /** SUBIDA DE ARCHIVOS */
 
-        $title = mysqli_real_escape_string($db, $_POST['title']);
-        $price = mysqli_real_escape_string($db, $_POST['price']);
-        $description = mysqli_real_escape_string($db, $_POST['description']);
-        $bedrooms = mysqli_real_escape_string($db, $_POST['bedrooms']);
-        $wc = mysqli_real_escape_string($db, $_POST['wc']);
-        $parking = mysqli_real_escape_string($db, $_POST['parking']);
-        $sellerId = mysqli_real_escape_string($db, $_POST['seller']);
-        $created = date('Y/m/d');
+        // Generar un nombre unico
+        $imageName = md5( uniqid( rand(), true) )  . ".jpg";
+        
+        // Realiza un resize a la imagen con intervention
+        if($_FILES['image']['tmp_name']) {
+            $image = Image::make($_FILES['image']['tmp_name'])->fit(800, 600);
+            $property->setImage($imageName);
+        }
 
-        $image = $_FILES['image'];
-
-        // Validaciones
-        if(!$title) {
-            $error[] = "El Titulo es obligatorio";
-        }
-        if(!$price) {
-            $error[] = "El precio es obligatorio";
-        }
-        if(strlen($description) < 50) {
-            $error[] = "La descripcion debe contener al menos 50 caracteres";
-        }
-        if(!$bedrooms) {
-            $error[] = "El numero de habitaciones es obligatorio";
-        }
-        if(!$wc) {
-            $error[] = "El numero de banios es obligatorio";
-        }
-        if(!$parking) {
-            $error[] = "El numero de estacionamientos es obligatorio";
-        }
-        if(!$sellerId) {
-            $error[] = "Debe seleccionar un vendedor";
-        }
-        if(!$image['name'] || $image['error']) {
-            $error[] = "La imagen es obligatoria";
-        }
-        // Validar imagen por peso
-        if($image['size'] > 100000) {
-            $error[] = 'La imagen es muy pesada';
-        }
+        $errors = $property->validate();
 
         // Realizar INSERT si no hay errores
-        if(empty($error)) {
+        if(empty($errors)) {
 
-            /** SUBIDA DE ARCHIVOS */
-
-            // Crear carpeta
-            $imageFolder = '../../images/';
-
-            if(!is_dir($imageFolder)) {
-                mkdir($imageFolder, true);
+            // Crear carpeta para subir imagenes
+            if(!is_dir(IMAGE_FOLDER)) {
+                mkdir(IMAGE_FOLDER);
             }
 
-            // Generar un nombre unico
-            $imageName = md5( uniqid( rand(), true) )  . ".jpg";
+            // Guardar la imagen en el servidor
+            $image->save(IMAGE_FOLDER . $imageName);
 
-            // Subir imagen
-            move_uploaded_file($image['tmp_name'], $imageFolder . $imageName);
+            // Guardar en la base de datos
+            $result = $property->save();
 
-            $result = mysqli_query($db, $query);
-
+            // Mostrar mensaje de error en caso de que haya uno
             if($result) {
                 // Redireccionar al usuario
 
-                header('Location: /bienesraices/admin/index.php?result=1');
+                header('Location: /admin/index.php?result=1');
             }
         }
 
@@ -111,9 +76,9 @@
 
         <a href="/bienesraices/admin/index.php" class="button green-button">Volver</a>
 
-        <?php foreach($error as $err): ?>
+        <?php foreach($errors as $error): ?>
         <div class="alert error">
-            <?php echo $err; ?>
+            <?php echo $error; ?>
         </div>
         <?php endforeach; ?>
 
