@@ -2,18 +2,15 @@
 
     // Verificar si el usuario esta autenticado
     require '../includes/functions.php';
-    $auth = authenticated();
-
-    if(!$auth) {
-        header('Location: /bienesraices/index.php');
-    }
+    
+    authenticated();
 
     // Importar conexion
     require '../includes/config/database.php';
     $db = connectDB();
 
     // Escribir Query
-    $query = "SELECT * FROM propiedades";
+    $query = "SELECT * FROM properties";
 
     // Consultar BDD
     $properties = mysqli_query($db, $query);
@@ -28,19 +25,19 @@
        if($propertyId) {
 
         // Eliminar archivo 
-        $query = "SELECT imagen FROM propiedades WHERE id = ${propertyId}";
+        $query = "SELECT image FROM properties WHERE id = ${propertyId}";
 
         $result = mysqli_query($db, $query);
         $property = mysqli_fetch_assoc($result);
 
-        unlink('../images/' . $property['imagen']);
+        unlink('../images/' . $property['image']);
 
         // Eliminar propiedad
-          $query = "DELETE FROM propiedades WHERE id = ${propertyId}";
+          $query = "DELETE FROM properties WHERE id = ${propertyId}";
           $result = mysqli_query($db, $query);
 
           if($result) {
-             header('Location: /bienesraices/admin/index.php?result=3');
+             header('Location: /admin/index.php?result=3');
           }
        }
     }
@@ -76,9 +73,9 @@
                 <?php while( $property = mysqli_fetch_assoc($properties) ): ?>
                 <tr>
                     <td><?php echo $property['id']; ?></td>
-                    <td><?php echo $property['titulo']; ?></td>
-                    <td> <img class="table-image" src="/bienesraices/images/<?php echo $property['imagen']; ?>"></img> </td>
-                    <td><?php echo $property['precio']; ?>$</td>
+                    <td><?php echo $property['title']; ?></td>
+                    <td> <img class="table-image" src="/images/<?php echo $property['image']; ?>"></img> </td>
+                    <td><?php echo $property['price']; ?>$</td>
                     <td>
                         <a href="properties/update.php?id=<?php echo $property['id']; ?>" class="yellow-button-block">Actualizar</a>
                         

@@ -4,6 +4,6 @@
 
     $_SESSION = [];
 
-    header('Location: /bienesraices/index.php');
+    header('Location: /index.php');
 
 ?>

@@ -1,19 +1,17 @@
 <?php
 
     // Validar que el usuario esta autenticado
-    require '../../includes/functions.php';
-    $auth = authenticated();
+    require '../../includes/app.php';
 
-    if(!$auth) {
-        header('Location: /bienesraices/index.php');
-    }
+    use App\Property;
+
+    // authenticated();
 
     // Database
-    require '../../includes/config/database.php';
     $db = connectDB();
 
     // Consultar vendedores
-    $query = "SELECT * FROM vendedores";
+    $query = "SELECT * FROM sellers";
     $result = mysqli_query($db, $query);
 
     // Arreglo con mensajes de error
@@ -29,9 +27,10 @@
 
     // Ejecutar el codigo despues de que el usuario envia el formulario
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // echo "<pre>";
-        // var_dump($_POST);
-        // echo "</pre>";
+
+        $property = new Property($_POST);
+        $property->save();
+        exit;
 
         $title = mysqli_real_escape_string($db, $_POST['title']);
         $price = mysqli_real_escape_string($db, $_POST['price']);
@@ -92,9 +91,6 @@
             // Subir imagen
             move_uploaded_file($image['tmp_name'], $imageFolder . $imageName);
 
-            //Insertar en la base de datos
-            $query = "INSERT INTO propiedades (titulo, precio, imagen, descripcion, habitaciones, wc, estacionamiento, creado, vendedores_id) VALUES ( '$title', '$price', '$imageName', '$description', '$bedrooms', '$wc', '$parking', '$created', '$sellerId')";
-
             $result = mysqli_query($db, $query);
 
             if($result) {
@@ -121,7 +117,7 @@
         </div>
         <?php endforeach; ?>
 
-        <form class="form" method="POST" action="/bienesraices/admin/properties/create.php" enctype="multipart/form-data">
+        <form class="form" method="POST" action="/admin/properties/create.php" enctype="multipart/form-data">
             <fieldset>
                 <legend>Informacion General</legend>
 
@@ -149,16 +145,16 @@
                 <input type="number" id="parking" name="parking" placeholder="Ej: 3" min="1" max="9" value="<?php echo $parking ?>">
 
                 <label for="wc">Baños:</label>
-                <input type="number" id="wc" name="wc" placeholder="Ej: 3" min="1" max="9" value="<?php echo $wc ?>">
+                <input type="number" id="wc" name="bathrooms" placeholder="Ej: 3" min="1" max="9" value="<?php echo $wc ?>">
             </fieldset>
 
             <fieldset>
                 <legend>Vendedor</legend>
                 
-                <select name="seller">
+                <select name="sellerId">
                     <option value="" selected disabled>--Seleccione--</option>
                     <?php while($seller = mysqli_fetch_assoc($result)) : ?>
-                        <option <?php echo $sellerId === $seller['id'] ? 'selected' : ''; ?> value="<?php echo $seller['id']; ?>"> <?php echo $seller['nombre'] . " " . $seller['apellido'] ?></option>
+                        <option <?php echo $sellerId === $seller['id'] ? 'selected' : ''; ?> value="<?php echo $seller['id']; ?>"> <?php echo $seller['name'] . " " . $seller['surname'] ?></option>
                     <?php endwhile; ?>
                 </select>
             </fieldset>

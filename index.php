@@ -1,5 +1,5 @@
 <?php
-    require './includes/functions.php';
+    require './includes/app.php';
     includeTemplate('header', $index = true);
 ?>
 
@@ -33,7 +33,7 @@
         ?>
 
         <div class="align-right">
-            <a href="advertisement.html" class="green-button">Ver Todas</a>
+            <a href="advertisements.php" class="green-button">Ver Todas</a>
         </div>
 
     </section>

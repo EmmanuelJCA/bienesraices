@@ -1,17 +1,23 @@
 <?php
 
-require 'app.php';
+define('TEMPLATES_URL', __DIR__ . '/templates');
+define('FUNCTIONS_URL', __DIR__ . 'functions.php');
 
 function includeTemplate( string $name, bool $index = false ) {
     include TEMPLATES_URL . "/${name}.php";
 }
 
-function authenticated() : bool {
+function authenticated() : void {
     session_start();
-    $auth = $_SESSION['logged'];
 
-    if($auth) {
-        return true;
+    if(!$_SESSION['logged']) {
+        header('Location: /');
     }
-    return false;
+}
+
+function debbug($var) {
+    echo "<pre>";
+    var_dump($var);
+    echo "</pre>";
+    exit;
 }

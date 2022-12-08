@@ -1,0 +1,17 @@
+{
+    "name": "emman/bienesraices",
+    "description": "Proyecto web de bienes raices",
+    "type": "project",
+    "authors": [
+        {
+            "name": "EmmanuelJCA",
+            "email": "emmanuelcanate@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "App\\" : "./class"
+        }
+    }
+}

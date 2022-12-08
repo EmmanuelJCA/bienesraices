@@ -1,45 +1,41 @@
 <?php
 
     // Verificar si el usuario esta autenticado
-    require '../../includes/functions.php';
-    $auth = authenticated();
-
-    if(!$auth) {
-        header('Location: /bienesraices/index.php');
-    }
+    require '../../includes/app.php';
+    
+    authenticated();
 
     // Validar ID
     $propertyId = $_GET['id'];
     $propertyId = filter_var($propertyId, FILTER_VALIDATE_INT);
 
     if(!$propertyId) {
-        header('Location: /bienesraices/admin/index.php');
+        header('Location: /admin/index.php');
     }
 
     // Database
-    require '../../includes/config/database.php';
     $db = connectDB();
 
     // Obtener los datos de la propiedad
-    $query = "SELECT * FROM propiedades WHERE id = ${propertyId}";
+    $query = "SELECT * FROM properties WHERE id = ${propertyId}";
     $result = mysqli_query($db, $query);
     $property = mysqli_fetch_assoc($result);
 
     // Consultar vendedores
-    $query = "SELECT * FROM vendedores";
+    $query = "SELECT * FROM sellers";
     $result = mysqli_query($db, $query);
 
     // Arreglo con mensajes de error
     $error = [];
 
-    $title = $property['titulo'];
-    $price = $property['precio'];
-    $description = $property['descripcion'];
-    $bedrooms = $property['habitaciones'];
-    $wc = $property['wc'];
-    $parking = $property['estacionamiento'];
-    $sellerId = $property['vendedores_id'];
-    $propertyImage = $property['imagen'];
+    $title = $property['title'];
+    $price = $property['price'];
+    $description = $property['description'];
+    $bedrooms = $property['bedrooms'];
+    $wc = $property['bathrooms'];
+    $parking = $property['parking'];
+    $sellerId = $property['seller_id'];
+    $propertyImage = $property['image'];
 
     // Ejecutar el codigo despues de que el usuario envia el formulario
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -102,7 +98,7 @@
             if($image['name']) {
 
                 // Eliminar la imagen previa
-                unlink($imageFolder . $property['imagen']);
+                unlink($imageFolder . $property['image']);
 
                 // Generar un nombre unico
                 $imageName = md5( uniqid( rand(), true) )  . ".jpg";
@@ -110,18 +106,18 @@
                 // Subir imagen
                 move_uploaded_file($image['tmp_name'], $imageFolder . $imageName);
             } else {
-                $imageName = $property['imagen'];
+                $imageName = $property['image'];
             }
 
             //Insertar en la base de datos
-            $query = " UPDATE propiedades SET titulo = '${title}', precio = '${price}', imagen = '${imageName}', descripcion = '${description}', habitaciones = ${bedrooms}, wc = ${wc}, estacionamiento = ${parking}, vendedores_id = ${sellerId} WHERE id = ${propertyId} ";
+            $query = " UPDATE properties SET title = '${title}', price = '${price}', image = '${imageName}', description = '${description}', bedrooms = ${bedrooms}, bathrooms = ${wc}, parking = ${parking}, seller_id = ${sellerId} WHERE id = ${propertyId} ";
 
             $result = mysqli_query($db, $query);
 
             if($result) {
                 // Redireccionar al usuario
 
-                header('Location: /bienesraices/admin/index.php?result=2');
+                header('Location: /admin/index.php?result=2');
             }
         }
 
@@ -134,7 +130,7 @@
     <main class="container section">
         <h1>Actualizar Propiedad</h1>
 
-        <a href="/bienesraices/admin/index.php" class="button green-button">Volver</a>
+        <a href="/admin/index.php" class="button green-button">Volver</a>
 
         <?php foreach($error as $err): ?>
         <div class="alert error">
@@ -180,7 +176,7 @@
                 <select name="seller">
                     <option value="" selected disabled>--Seleccione--</option>
                     <?php while($seller = mysqli_fetch_assoc($result)) : ?>
-                        <option <?php echo $sellerId === $seller['id'] ? 'selected' : ''; ?> value="<?php echo $seller['id']; ?>"> <?php echo $seller['nombre'] . " " . $seller['apellido'] ?></option>
+                        <option <?php echo $sellerId === $seller['id'] ? 'selected' : ''; ?> value="<?php echo $seller['id']; ?>"> <?php echo $seller['name'] . " " . $seller['surname'] ?></option>
                     <?php endwhile; ?>
                 </select>
             </fieldset>
