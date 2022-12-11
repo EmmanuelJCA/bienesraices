@@ -1,19 +1,13 @@
 <?php
 
     // Verificar si el usuario esta autenticado
-    require '../includes/functions.php';
-    
+    require '../includes/app.php';
     authenticated();
 
-    // Importar conexion
-    require '../includes/config/database.php';
-    $db = connectDB();
+    use App\Property;
 
-    // Escribir Query
-    $query = "SELECT * FROM properties";
-
-    // Consultar BDD
-    $properties = mysqli_query($db, $query);
+    // Implementar un metodo para obtener todas las propiedades
+    $properties = Property::all();
 
     // Muestra mensaje condicional
     $result = $_GET['result'] ?? null;
@@ -70,22 +64,22 @@
             </thead>
 
             <tbody> <!-- Mostrar los Resultados -->
-                <?php while( $property = mysqli_fetch_assoc($properties) ): ?>
+                <?php foreach( $properties as $property): ?>
                 <tr>
-                    <td><?php echo $property['id']; ?></td>
-                    <td><?php echo $property['title']; ?></td>
-                    <td> <img class="table-image" src="/images/<?php echo $property['image']; ?>"></img> </td>
-                    <td><?php echo $property['price']; ?>$</td>
+                    <td><?php echo $property->id; ?></td>
+                    <td><?php echo $property->title; ?></td>
+                    <td> <img class="table-image" src="/images/<?php echo $property->image; ?>"></img> </td>
+                    <td><?php echo $property->price; ?>$</td>
                     <td>
-                        <a href="properties/update.php?id=<?php echo $property['id']; ?>" class="yellow-button-block">Actualizar</a>
+                        <a href="properties/update.php?id=<?php echo $property->id; ?>" class="yellow-button-block">Actualizar</a>
                         
                         <form method="POST" class="w-100">
-                            <input type="hidden" name="id" value="<?php echo $property['id']; ?>">
+                            <input type="hidden" name="id" value="<?php echo $property->id; ?>">
                             <input type="submit" class="red-button-block" value="Eliminar">
                         </form>
                     </td>
                 </tr>
-                <?php endwhile; ?>
+                <?php endforeach; ?>
             </tbody>
         </table>
     </main>

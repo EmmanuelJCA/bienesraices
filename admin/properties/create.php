@@ -18,14 +18,6 @@
     // Arreglo con mensajes de error
     $errors = [];
 
-    $title = '';
-    $price = '';
-    $description = '';
-    $bedrooms = '';
-    $wc = '';
-    $parking = '';
-    $sellerId = '';
-
     // Ejecutar el codigo despues de que el usuario envia el formulario
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -83,46 +75,7 @@
         <?php endforeach; ?>
 
         <form class="form" method="POST" action="/admin/properties/create.php" enctype="multipart/form-data">
-            <fieldset>
-                <legend>Informacion General</legend>
-
-                <label for="title">Titulo:</label>
-                <input type="text" id="title" name="title" placeholder="Titulo de la propiedad" value="<?php echo $title ?>">
-
-                <label for="price">Precio:</label>
-                <input type="number" id="price" name="price" placeholder="Precio de la propiedad" value="<?php echo $price ?>">
-
-                <label for="image">Imagen:</label>
-                <input type="file" id="image" name="image" accept="image/jpeg, image/png">
-
-                <label for="description">Descripcion:</label>
-                <textarea id="description" name="description"><?php echo $description ?></textarea>
-
-            </fieldset>
-
-            <fieldset>
-                <legend>Informacion de la Propiedad</legend>
-
-                <label for="bedrooms">Habitaciones:</label>
-                <input type="number" id="bedrooms" name="bedrooms" placeholder="Ej: 3" min="1" max="9" value="<?php echo $bedrooms ?>">
-
-                <label for="parking">Estacionamiento:</label>
-                <input type="number" id="parking" name="parking" placeholder="Ej: 3" min="1" max="9" value="<?php echo $parking ?>">
-
-                <label for="wc">Baños:</label>
-                <input type="number" id="wc" name="bathrooms" placeholder="Ej: 3" min="1" max="9" value="<?php echo $wc ?>">
-            </fieldset>
-
-            <fieldset>
-                <legend>Vendedor</legend>
-                
-                <select name="sellerId">
-                    <option value="" selected disabled>--Seleccione--</option>
-                    <?php while($seller = mysqli_fetch_assoc($result)) : ?>
-                        <option <?php echo $sellerId === $seller['id'] ? 'selected' : ''; ?> value="<?php echo $seller['id']; ?>"> <?php echo $seller['name'] . " " . $seller['surname'] ?></option>
-                    <?php endwhile; ?>
-                </select>
-            </fieldset>
+            <?php include '../../includes/templates/properties_form.php'; ?>
 
             <input type="submit" value="Crear Propiedad" class="button green-button">
         </form>

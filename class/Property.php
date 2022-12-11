@@ -37,7 +37,7 @@ class Property {
         $this->bathrooms = $args['bathrooms'] ?? '';
         $this->parking = $args['parking'] ?? '';
         $this->created = date('Y/m/d');
-        $this->sellerId = $args['sellerId'] ?? '';
+        $this->sellerId = $args['sellerId'] ?? 1;
 
     }
 
@@ -119,5 +119,43 @@ class Property {
         return self::$errors;
     }
 
+    // Listar todas las propiedades
+    public static function all() {
+        $query = "SELECT * FROM properties";
+
+        $result = self::querySQL($query);
+
+        return $result;
+    }
+
+    public static function querySQL($query) {
+        // Consultar la BDD
+        $result = self::$db->query($query);
+
+        // Iterar los resultados
+        $array = [];
+        while($register = $result->fetch_assoc()){
+            $array[] = self::createObject($register);
+        }
+
+        // Liberar memoria
+        $result->free();
+
+
+        // Retonar los resultados
+        return $array;
+    }
+
+    protected static function createObject($register) {
+        $object = new self;
+
+        foreach($register as $key => $value) {
+            if( property_exists( $object, $key ) ) {
+                $object->$key = $value;
+            }
+        }
+
+        return $object;
+    }
 
 }
