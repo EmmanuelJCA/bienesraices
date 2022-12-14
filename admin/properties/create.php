@@ -15,21 +15,19 @@
     $query = "SELECT * FROM sellers";
     $result = mysqli_query($db, $query);
 
-    // Arreglo con mensajes de error
-    $errors = [];
-
     // Ejecutar el codigo despues de que el usuario envia el formulario
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        $property = new Property($_POST);
+        $property = new Property($_POST['property']);
+
         /** SUBIDA DE ARCHIVOS */
 
         // Generar un nombre unico
         $imageName = md5( uniqid( rand(), true) )  . ".jpg";
         
         // Realiza un resize a la imagen con intervention
-        if($_FILES['image']['tmp_name']) {
-            $image = Image::make($_FILES['image']['tmp_name'])->fit(800, 600);
+        if($_FILES['property']['tmp_name']['image']) {
+            $image = Image::make($_FILES['property']['tmp_name']['image'])->fit(800, 600);
             $property->setImage($imageName);
         }
 
@@ -56,7 +54,6 @@
                 header('Location: /admin/index.php?result=1');
             }
         }
-
         
     }
 
@@ -66,7 +63,7 @@
     <main class="container section">
         <h1>Crear</h1>
 
-        <a href="/bienesraices/admin/index.php" class="button green-button">Volver</a>
+        <a href="/admin" class="button green-button">Volver</a>
 
         <?php foreach($errors as $error): ?>
         <div class="alert error">
@@ -75,6 +72,7 @@
         <?php endforeach; ?>
 
         <form class="form" method="POST" action="/admin/properties/create.php" enctype="multipart/form-data">
+
             <?php include '../../includes/templates/properties_form.php'; ?>
 
             <input type="submit" value="Crear Propiedad" class="button green-button">

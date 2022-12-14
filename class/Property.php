@@ -43,6 +43,17 @@ class Property {
 
     public function save() {
 
+        if(isset($this->id)) {
+            $this->update();
+
+        } else {
+            $this->create();
+
+        }
+    }
+
+    public function create() {
+
         // Sanitizar datos
         $attributes = $this->sanitizeAttributes();
 
@@ -57,6 +68,29 @@ class Property {
 
         return $result;
 
+    }
+
+    public function update() {
+
+        // Sanitizar datos
+        $attributes = $this->sanitizeAttributes();
+
+        $values = [];
+        foreach($attributes as $key => $value) {
+            $values [] = "{$key}='{$value}'";
+        }
+
+        $query = " UPDATE properties SET ";
+        $query .= join(', ', $values );
+        $query .= " WHERE id = '" . self::$db->escape_string($this->id) . "'";
+        $query .= " LIMIT 1 ";
+
+        $result = self::$db->query($query);
+
+        if($result) {
+            // Redireccionar al usuario
+            header('Location: /admin/index.php?result=2');
+        }
     }
 
     // Identificar y unir los atributos de la BDD
@@ -81,6 +115,14 @@ class Property {
     }
 
     public function setImage($image) {
+        if(isset($this->id)) {
+            // Comparar si existe el archivo
+            $imageExists = file_exists(IMAGE_FOLDER . $this->image);
+            if($imageExists) {
+                unlink(IMAGE_FOLDER . $this->image);
+            }
+        }
+
         $this->image = $image;
     }
 
@@ -128,6 +170,14 @@ class Property {
         return $result;
     }
 
+    // Encontrar una propiedad por su id
+    public static function find($id) {
+        $query = "SELECT * FROM properties WHERE id = ${id}";
+        $result = self::querySQL($query);
+
+        return array_shift($result);
+    }
+
     public static function querySQL($query) {
         // Consultar la BDD
         $result = self::$db->query($query);
@@ -156,6 +206,15 @@ class Property {
         }
 
         return $object;
+    }
+
+    // Sincroniza el objeto en memoria con los cambios realizados por el usuario
+    public function sync($args = []) {
+        foreach($args as $key => $value) {
+            if(property_exists($this, $key) && !is_null($value)) {
+                $this->$key = $value;
+            }
+        }
     }
 
 }
