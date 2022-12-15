@@ -28,7 +28,7 @@ class Property {
 
     public function __construct($args = [])
     {
-        $this->id = $args['id'] ?? '';
+        $this->id = $args['id'] ?? null;
         $this->title = $args['title'] ?? '';
         $this->price = $args['price'] ?? '';
         $this->image = $args['image'] ?? '';
@@ -43,7 +43,7 @@ class Property {
 
     public function save() {
 
-        if(isset($this->id)) {
+        if(!is_null($this->id)) {
             $this->update();
 
         } else {
@@ -66,7 +66,12 @@ class Property {
 
         $result = self::$db->query($query);
 
-        return $result;
+        // Mostrar mensaje de error en caso de que haya uno
+        if($result) {
+            // Redireccionar al usuario
+
+            header('Location: /admin/index.php?result=1');
+        }
 
     }
 
@@ -93,6 +98,16 @@ class Property {
         }
     }
 
+    public function delete() { 
+        $query = "DELETE FROM properties WHERE id = " . self::$db->escape_string($this->id) . " LIMIT 1 ";
+        $result = self::$db->query($query);
+
+        if($result) {
+            $this->deleteImage();
+            header('Location: /admin/index.php?result=3');
+        }
+    }
+
     // Identificar y unir los atributos de la BDD
     public function attributes() {
         $attributes = [];
@@ -115,15 +130,20 @@ class Property {
     }
 
     public function setImage($image) {
-        if(isset($this->id)) {
-            // Comparar si existe el archivo
-            $imageExists = file_exists(IMAGE_FOLDER . $this->image);
-            if($imageExists) {
-                unlink(IMAGE_FOLDER . $this->image);
-            }
+        if(!is_null($this->id)) {
+            $this->deleteImage();
         }
 
         $this->image = $image;
+    }
+
+    public function deleteImage() {
+        // Comparar si existe el archivo
+        $imageExists = file_exists(IMAGE_FOLDER . $this->image);
+        if($imageExists) {
+            debbug($imageExists);
+            unlink(IMAGE_FOLDER2 . $this->image);
+        }
     }
 
     // Validacion

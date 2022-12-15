@@ -45,14 +45,8 @@
             $image->save(IMAGE_FOLDER . $imageName);
 
             // Guardar en la base de datos
-            $result = $property->save();
-
-            // Mostrar mensaje de error en caso de que haya uno
-            if($result) {
-                // Redireccionar al usuario
-
-                header('Location: /admin/index.php?result=1');
-            }
+            $property->save();
+            
         }
         
     }

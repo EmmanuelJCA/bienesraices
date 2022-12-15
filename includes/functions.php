@@ -2,6 +2,7 @@
 
 define('TEMPLATES_URL', __DIR__ . '/templates');
 define('FUNCTIONS_URL', __DIR__ . 'functions.php');
+define('IMAGE_FOLDER2', '../images/');
 define('IMAGE_FOLDER', '../../images/');
 
 function includeTemplate( string $name, bool $index = false ) {

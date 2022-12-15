@@ -18,21 +18,8 @@
 
        if($propertyId) {
 
-        // Eliminar archivo 
-        $query = "SELECT image FROM properties WHERE id = ${propertyId}";
-
-        $result = mysqli_query($db, $query);
-        $property = mysqli_fetch_assoc($result);
-
-        unlink('../images/' . $property['image']);
-
-        // Eliminar propiedad
-          $query = "DELETE FROM properties WHERE id = ${propertyId}";
-          $result = mysqli_query($db, $query);
-
-          if($result) {
-             header('Location: /admin/index.php?result=3');
-          }
+        $property = Property::find($propertyId);
+        $property->delete();    
        }
     }
 
