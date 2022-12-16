@@ -5,9 +5,11 @@
     authenticated();
 
     use App\Property;
+    use App\Seller;
 
     // Implementar un metodo para obtener todas las propiedades
     $properties = Property::all();
+    $sellers = Seller::all();    
 
     // Muestra mensaje condicional
     $result = $_GET['result'] ?? null;

@@ -3,6 +3,7 @@
     // Verificar si el usuario esta autenticado
 
     use App\Property;
+    use App\Seller;
     use Intervention\Image\ImageManagerStatic as Image;
 
     require '../../includes/app.php';
@@ -24,8 +25,7 @@
     $property = Property::find($propertyId);
 
     // Consultar vendedores
-    $query = "SELECT * FROM sellers";
-    $result = mysqli_query($db, $query);
+    $sellers = Seller::all();
 
     // Arreglo con mensajes de error
     $errors = Property::getErrors();
@@ -53,7 +53,10 @@
 
         // Realizar INSERT si no hay errores
         if(empty($errors)) {
+            if($_FILES['property']['tmp_name']['image']) {
             $image->save(IMAGE_FOLDER . $imageName);
+            }
+            
             $result =  $property->save();
         }
     }

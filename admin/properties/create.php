@@ -4,16 +4,18 @@
     require '../../includes/app.php';
 
     use App\Property;
+    use App\Seller;
     use Intervention\Image\ImageManagerStatic as Image;
 
     authenticated();
 
-    // Database
-    $db = connectDB();
+    $property = new Property();
 
-    // Consultar vendedores
-    $query = "SELECT * FROM sellers";
-    $result = mysqli_query($db, $query);
+    // Consulta para obtener todos los vendedores
+    $sellers = Seller::all();
+
+    // Arreglos con mensajes de errores
+    $errors = Property::getErrors();
 
     // Ejecutar el codigo despues de que el usuario envia el formulario
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
