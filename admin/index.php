@@ -15,13 +15,24 @@
     $result = $_GET['result'] ?? null;
 
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
-       $propertyId = $_POST['id'];
-       $propertyId = filter_var($propertyId, FILTER_VALIDATE_INT);
+       $id = $_POST['id'];
+       $id = filter_var($id, FILTER_VALIDATE_INT);
 
-       if($propertyId) {
+       if($id) {
 
-        $property = Property::find($propertyId);
-        $property->delete();    
+        $type = $_POST['type'];
+
+        if(validateContentType($type)) {
+            if($type === 'seller') {
+                $seller = Seller::find($id);
+                $seller->delete();  
+            } elseif ($type === 'property') {
+                $property = Property::find($id);
+                $property->delete();   
+            }
+        } else {
+            
+        } 
        }
     }
 
@@ -33,14 +44,16 @@
         <h1>Administrador de Bienes Raices</h1>
 
         <?php if( intval($result) === 1 ): ?>
-            <p class="alert success">Anuncio Creado Correctamente</p>
+            <p class="alert success">Creado Correctamente</p>
         <?php elseif( intval($result) === 2 ): ?>
-            <p class="alert success">Anuncio Actualizado Correctamente</p>
+            <p class="alert success">Actualizado Correctamente</p>
         <?php elseif( intval($result) === 3 ): ?>
-            <p class="alert success">Anuncio Eliminado Correctamente</p>
+            <p class="alert success">Eliminado Correctamente</p>
         <?php endif; ?>
         <a href="properties/create.php" class="button green-button">Nueva Propiedad</a>
-    
+        <a href="sellers/create.php" class="button yellow-button">Nuevo vendedor</a>
+
+        <h2>Propiedades</h2>
         <table class="properties">
             <thead>
                 <tr>
@@ -64,6 +77,38 @@
                         
                         <form method="POST" class="w-100">
                             <input type="hidden" name="id" value="<?php echo $property->id; ?>">
+                            <input type="hidden" name="type" value="property">
+                            <input type="submit" class="red-button-block" value="Eliminar">
+                        </form>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+
+        <h2>Vendedores</h2>
+        <table class="properties">
+        <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Telefono</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody> <!-- Mostrar los Resultados -->
+                <?php foreach( $sellers as $seller): ?>
+                <tr>
+                    <td><?php echo $seller->id; ?></td>
+                    <td><?php echo $seller->name . " " . $seller->surname; ?></td>
+                    <td><?php echo $seller->phone; ?>$</td>
+                    <td>
+                        <a href="sellers/update.php?id=<?php echo $seller->id; ?>" class="yellow-button-block">Actualizar</a>
+                        
+                        <form method="POST" class="w-100">
+                            <input type="hidden" name="id" value="<?php echo $seller->id; ?>">
+                            <input type="hidden" name="type" value="seller">
                             <input type="submit" class="red-button-block" value="Eliminar">
                         </form>
                     </td>

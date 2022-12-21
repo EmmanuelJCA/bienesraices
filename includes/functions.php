@@ -29,3 +29,10 @@ function sanitize($html) : string {
     $sanitized =  htmlspecialchars($html);
     return $sanitized;
 }
+
+// Validar tipo de contenido
+function validateContentType($type) {
+    $types = ['seller', 'property'];
+
+    return in_array($type, $types);
+}
