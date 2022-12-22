@@ -143,7 +143,8 @@ class ActiveRecord {
 
     // Encontrar una propiedad por su id
     public static function find($id) {
-        $query = "SELECT * FROM properties WHERE id = ${id}";
+
+        $query = "SELECT * FROM " . static::$table . " WHERE id = " . self::$db->escape_string($id);
         $result = self::querySQL($query);
 
         return array_shift($result);

@@ -6,7 +6,15 @@ use App\Seller;
 
 authenticated();
 
-$seller = new Seller();
+$id = $_GET['id'];
+$id = filter_var($id, FILTER_VALIDATE_INT);
+
+if(!$id) {
+    header('Location: /admin');
+}
+
+// Obtener datos del vendedor
+$seller = Seller::find($id);
 
 // Arreglos con mensajes de errores
 $errors = Seller::getErrors();
@@ -14,6 +22,16 @@ $errors = Seller::getErrors();
 // Ejecutar el codigo despues de que el usuario envia el formulario
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+    // Asignar los valores
+    $args = $_POST['seller'];
+    $seller->sync($args);
+
+    // Validacion
+    $errors = $seller->validate();
+
+    if(empty($errors)) {
+        $seller->save();
+    }
 }
 
 includeTemplate('header');
@@ -30,7 +48,7 @@ includeTemplate('header');
         </div>
         <?php endforeach; ?>
 
-        <form class="form" method="POST" action="/admin/sellers/update.php" enctype="multipart/form-data">
+        <form class="form" method="POST" enctype="multipart/form-data">
 
             <?php include '../../includes/templates/sellers_form.php'; ?>
 

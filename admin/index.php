@@ -102,7 +102,7 @@
                 <tr>
                     <td><?php echo $seller->id; ?></td>
                     <td><?php echo $seller->name . " " . $seller->surname; ?></td>
-                    <td><?php echo $seller->phone; ?>$</td>
+                    <td><?php echo $seller->phone; ?></td>
                     <td>
                         <a href="sellers/update.php?id=<?php echo $seller->id; ?>" class="yellow-button-block">Actualizar</a>
                         
