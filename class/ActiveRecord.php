@@ -141,6 +141,15 @@ class ActiveRecord {
         return $result;
     }
 
+    // Listar cantidad especifica de propiedades
+    public static function get($limit) {
+        $query = "SELECT * FROM " . static::$table . " LIMIT " . $limit;
+
+        $result = self::querySQL($query);
+
+        return $result;
+    }
+
     // Encontrar una propiedad por su id
     public static function find($id) {
 

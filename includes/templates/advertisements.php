@@ -1,7 +1,11 @@
 <?php
     use App\Property;
 
-    $properties = Property::all();
+    if($_SERVER['SCRIPT_NAME'] === '/advertisements.php') {
+        $properties = Property::all();
+    } else {
+        $properties = Property::get(3);
+    }
 
 
 ?>
