@@ -1,5 +1,5 @@
 <?php
-    require './includes/functions.php';
+    require './includes/app.php';
     includeTemplate('header', $index = true);
 ?>
 
@@ -28,12 +28,11 @@
         <h1>Casas y Departamentos en venta</h1>
         
         <?php
-            $limit = 3;
             include 'includes\templates\advertisements.php';
         ?>
 
         <div class="align-right">
-            <a href="advertisement.html" class="green-button">Ver Todas</a>
+            <a href="advertisements.php" class="green-button">Ver Todas</a>
         </div>
 
     </section>

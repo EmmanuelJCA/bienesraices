@@ -1,68 +1,51 @@
 <?php
+    require './includes/app.php';
+    use App\Property;
 
     // Validar ID
-    $propertyId = $_GET['id'];
-    $propertyId = filter_var($propertyId, FILTER_VALIDATE_INT);
+    $id = $_GET['id'];
+    $id = filter_var($id, FILTER_VALIDATE_INT);
 
-    if(!$propertyId) {
-        header('Location: /bienesraices/index.php');
+    if(!$id) {
+        header('Location: /index.php');
     }
 
-    // Importar Bdd
-    require __DIR__ . '/includes/config/database.php';
-    $db = connectDB();
-
-    // Consultar
-    $query = "SELECT * FROM propiedades WHERE id = ${propertyId}";
-
-    // Obtener resultado
-    $result = mysqli_query($db, $query);
-    $property = mysqli_fetch_assoc($result);
-
-    if(!$result->num_rows) {
-        header('Location: /bienesraices/index.php');
-    }
+    $property = Property::find($id);
 
     // Importar un template
-    require './includes/functions.php';
     includeTemplate('header');
 ?>
 
 <main class="container section center-content">
-    <h1><?php echo $property['titulo']; ?></h1>
+    <h1><?php echo $property->title; ?></h1>
 
-    <img loading="lazy" src="/bienesraices/images/<?php echo $property['imagen']; ?>" alt="imagen de la propiedad"> 
+    <img loading="lazy" src="/images/<?php echo $property->image; ?>" alt="imagen de la propiedad"> 
     
     <div class="sumary-property">
-        <p class="price"><?php echo $property['precio']; ?>$</p>
+        <p class="price"><?php echo $property->price; ?>$</p>
     </div>
 
     <ul class="icons-features">
         <li>
             <img class="icon" loading="lazy" src="build/img/icono_wc.svg" alt="icono wc">
-            <p><?php echo $property['wc']; ?></p>
+            <p><?php echo $property->bathrooms; ?></p>
         </li>
         <li>
             <img class="icon" loading="lazy" src="build/img/icono_estacionamiento.svg" alt="icono estacionamiento">
-            <p><?php echo $property['estacionamiento']; ?></p>
+            <p><?php echo $property->parking; ?></p>
         </li>
         <li>
             <img class="icon" loading="lazy" src="build/img/icono_dormitorio.svg" alt="icono habitaciones">
-            <p><?php echo $property['habitaciones']; ?></p>
+            <p><?php echo $property->bedrooms; ?></p>
         </li>
     </ul>
     
     <p>
-        <?php echo $property['descripcion']; ?>
+        <?php echo $property->description; ?>
     </p>
 
 </main>
 
 <?php
-
-    // Cerrar conexion DB
-    // mysqli_close($db);
-
-    // Incluir un template
     includeTemplate('footer');
 ?>

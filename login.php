@@ -1,7 +1,7 @@
 <?php
 
     // Importar la conexionn
-    require __DIR__ . '/includes/config/database.php';
+    require 'includes/app.php';
     $db = connectDB();
 
     // Arreglo de errores
@@ -22,7 +22,7 @@
         if(empty($errors)) {
 
             // Revisar si el usuario existe
-            $query = "SELECT * FROM usuarios WHERE email = '${email}'";
+            $query = "SELECT * FROM users WHERE email = '${email}'";
             $result = mysqli_query($db, $query);
 
             if($result->num_rows) {
@@ -41,7 +41,7 @@
                     $_SESSION['user'] = $user['email'];
                     $_SESSION['logged'] = true;
 
-                    header('Location: /bienesraices/admin/index.php');                    
+                    header('Location: /admin/index.php');                    
 
                 } else {
                     $errors [] = "El password es incorrecto";
@@ -54,7 +54,6 @@
     }
 
     // Incluir Template
-    require 'includes/functions.php';
     includeTemplate('header');
 ?>
 
