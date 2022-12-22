@@ -43,13 +43,13 @@
     <main class="container section">
         <h1>Administrador de Bienes Raices</h1>
 
-        <?php if( intval($result) === 1 ): ?>
-            <p class="alert success">Creado Correctamente</p>
-        <?php elseif( intval($result) === 2 ): ?>
-            <p class="alert success">Actualizado Correctamente</p>
-        <?php elseif( intval($result) === 3 ): ?>
-            <p class="alert success">Eliminado Correctamente</p>
-        <?php endif; ?>
+        <?php
+            $message = showNotifications($result);
+
+            if($message) { ?>
+                <p class="alert success"><?php echo sanitize($message); ?></p>
+            <?php } ?>
+
         <a href="properties/create.php" class="button green-button">Nueva Propiedad</a>
         <a href="sellers/create.php" class="button yellow-button">Nuevo vendedor</a>
 
