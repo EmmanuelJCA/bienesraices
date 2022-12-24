@@ -46,7 +46,7 @@ class ActiveRecord {
         if($result) {
             // Redireccionar al usuario
 
-            header('Location: /admin/index.php?result=1');
+            header('Location: /admin?result=1');
         }
 
     }
@@ -70,7 +70,7 @@ class ActiveRecord {
 
         if($result) {
             // Redireccionar al usuario
-            header('Location: /admin/index.php?result=2');
+            header('Location: /admin?result=2');
         }
     }
 
@@ -118,7 +118,7 @@ class ActiveRecord {
         $imageExists = file_exists(IMAGE_FOLDER . $this->image);
         if($imageExists) {
             debbug($imageExists);
-            unlink(IMAGE_FOLDER2 . $this->image);
+            unlink(IMAGE_FOLDER . $this->image);
         }
     }
 

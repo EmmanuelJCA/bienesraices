@@ -2,8 +2,7 @@
 
 define('TEMPLATES_URL', __DIR__ . '/templates');
 define('FUNCTIONS_URL', __DIR__ . 'functions.php');
-define('IMAGE_FOLDER2', '../images/');
-define('IMAGE_FOLDER', '../../images/');
+define('IMAGE_FOLDER', $_SERVER['DOCUMENT_ROOT'] . '/images/');
 
 function includeTemplate( string $name, bool $index = false ) {
     include TEMPLATES_URL . "/${name}.php";
@@ -57,4 +56,16 @@ function showNotifications($code) {
     }
 
     return $message;
+}
+
+function validateUrlId($url) {
+        // Validar ID
+        $id = $_GET['id'];
+        $id = filter_var($id, FILTER_VALIDATE_INT);
+    
+        if(!$id) {
+            header("Location: ${url}");
+        }
+
+        return $id;
 }
