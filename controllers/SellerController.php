@@ -1,6 +1,7 @@
 <?php
 
 namespace Controller;
+
 use MVC\Router;
 use Model\Seller;
 
@@ -14,14 +15,14 @@ class SellerController {
         $errors = Seller::getErrors();
 
         // Ejecutar el codigo despues de que el usuario envia el formulario
-        if($_SERVER['REQUEST_METHOD'] === 'POST') {
-            
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
             // Crear una nueva instancia
             $seller = new Seller($_POST['seller']);
 
             $errors = $seller->validate();
 
-            if(empty($errors)) {
+            if (empty($errors)) {
                 $seller->save();
             }
         }
@@ -43,7 +44,7 @@ class SellerController {
         $errors = Seller::getErrors();
 
         // Ejecutar el codigo despues de que el usuario envia el formulario
-        if($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Asignar los valores
             $args = $_POST['seller'];
             $seller->sync($args);
@@ -51,7 +52,7 @@ class SellerController {
             // Validacion
             $errors = $seller->validate();
 
-            if(empty($errors)) {
+            if (empty($errors)) {
                 $seller->save();
             }
         }
@@ -60,5 +61,21 @@ class SellerController {
             'seller' => $seller,
             'errors' => $errors
         ]);
+    }
+
+    public static function delete() {
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['id'];
+            $id = filter_var($id, FILTER_VALIDATE_INT);
+
+            if ($id) {
+                $type = $_POST['type'];
+                if (validateContentType($type)) {
+                    $seller = Seller::find($id);
+                    $seller->delete();
+                }
+            }
+        }
     }
 }
