@@ -65,7 +65,7 @@
                     <td><?php echo $seller->name . " " . $seller->surname; ?></td>
                     <td><?php echo $seller->phone; ?></td>
                     <td>
-                        <a href="sellers/update.php?id=<?php echo $seller->id; ?>" class="yellow-button-block">Actualizar</a>
+                        <a href="sellers/update?id=<?php echo $seller->id; ?>" class="yellow-button-block">Actualizar</a>
                         
                         <form method="POST" class="w-100">
                             <input type="hidden" name="id" value="<?php echo $seller->id; ?>">
