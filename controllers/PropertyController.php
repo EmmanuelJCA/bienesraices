@@ -10,13 +10,16 @@ class PropertyController {
     public static function index(Router $router) {
 
         $properties = Property::all();
+        $sellers = Seller::all();
+
 
         // Muestra mensaje condicional
         $result = $_GET['result'] ?? null;
 
         $router->render('properties/admin', [
             'properties' => $properties,
-            'result' => $result
+            'result' => $result,
+            'sellers' => $sellers
         ]);
     }
 
