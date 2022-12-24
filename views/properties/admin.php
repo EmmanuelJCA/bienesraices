@@ -36,7 +36,7 @@
                     <td>
                         <a href="/properties/update?id=<?php echo $property->id; ?>" class="yellow-button-block">Actualizar</a>
                         
-                        <form method="POST" class="w-100" action="/properties/delete">
+                        <form method="POST" action="properties/delete" class="w-100" >
                             <input type="hidden" name="id" value="<?php echo $property->id; ?>">
                             <input type="hidden" name="type" value="property">
                             <input type="submit" class="red-button-block" value="Eliminar">

@@ -117,7 +117,6 @@ class ActiveRecord {
         // Comparar si existe el archivo
         $imageExists = file_exists(IMAGE_FOLDER . $this->image);
         if($imageExists) {
-            debbug($imageExists);
             unlink(IMAGE_FOLDER . $this->image);
         }
     }
