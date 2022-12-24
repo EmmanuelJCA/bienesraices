@@ -80,7 +80,7 @@ class ActiveRecord {
 
         if($result) {
             $this->deleteImage();
-            header('Location: /admin/index.php?result=3');
+            header('Location: /admin?result=3');
         }
     }
 
