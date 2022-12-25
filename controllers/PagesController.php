@@ -36,13 +36,20 @@ class PagesController {
             'property' => $property
         ]);
     }
-    public static function blog(  ) {
-        echo "Desde blog";
+    public static function blog( Router $router ) {
+        $router->render('pages/blog');
     }
-    public static function blogPost (  ) {
-        echo "Desde blogPost";
+    public static function blogPost ( Router $router ) {
+        $router->render('pages/blogPost');
     }
-    public static function contact(  ) {
-        echo "Desde contact";
+    public static function contact( Router $router ) {
+
+        if($_SERVER['REQUEST_METHOD'] === 'POST') {
+                debbug($_POST);
+        }
+
+        $router->render('pages/contact', [
+
+        ]);
     }
 }
