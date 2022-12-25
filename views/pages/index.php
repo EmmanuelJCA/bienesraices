@@ -10,7 +10,7 @@
         ?>
 
         <div class="align-right">
-            <a href="advertisements.php" class="green-button">Ver Todas</a>
+            <a href="/properties" class="green-button">Ver Todas</a>
         </div>
 
     </section>

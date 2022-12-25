@@ -19,11 +19,22 @@ class PagesController {
     public static function aboutUs( Router $router ) {
         $router->render('pages/aboutUs');
     }
-    public static function properties(  ) {
-        echo "Desde properties";
+    public static function properties( Router $router ) {
+        
+        $properties = Property::all();
+        $router->render('pages/properties', [
+            'properties' => $properties
+        ]);
     }
-    public static function property(  ) {
-        echo "Desde property";
+    public static function property( Router $router ) {
+
+        // Validar ID
+        $id = validateUrlId('properties');
+
+        $property = Property::find($id);
+        $router->render('pages/property', [
+            'property' => $property
+        ]);
     }
     public static function blog(  ) {
         echo "Desde blog";
