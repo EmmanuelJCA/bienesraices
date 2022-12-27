@@ -16,6 +16,14 @@ class Router {
     }
     
     public function checkRoutes() {
+
+        session_start();
+
+        $auth = $_SESSION['logged'] ?? null;
+
+        // Arreglo para rutas protegidas
+        $protectedRoutes = ['/admin', '/properties/create', '/properties/updaye', '/properties/delete', '/sellers/create', '/sellers/update', '/sellers/delete'];
+
         $currentUrl = $_SERVER['PATH_INFO'] ?? '/';
         $method = $_SERVER['REQUEST_METHOD'];
 
@@ -25,6 +33,10 @@ class Router {
             $fn = $this->routesGET[$currentUrl] ?? null;
         }
 
+        if(in_array($currentUrl, $protectedRoutes) && !$auth) {
+            header('Location: /login');
+        }
+        
         if($fn) {
             // La url existe y hay una funcion asociada
             call_user_func($fn, $this);
