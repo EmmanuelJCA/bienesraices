@@ -1,3 +1,13 @@
+<?php
+
+if(!isset($_SESSION)) {
+    session_start();
+}
+
+$auth = $_SESSION['logged'] ?? false;
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
