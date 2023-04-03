@@ -18,7 +18,7 @@
     <section class="contact-section">
         <h2>Encuentra la casa de tus sueños</h2>
         <p>Llena el formulario de contacto y un asesor se pondrá en contacto contigo a la brevedad</p>
-        <a href="contact.html" class="yellow-button">Contactanos</a>
+        <a href="/contact" class="yellow-button">Contactanos</a>
     </section>
 
     <div class="container section lower-section">
@@ -75,7 +75,7 @@
                 <blockquote>
                     El personal se comportó de una excelente forma, muy buena atención y la casa que me ofrecieron cumple con todas mis espectativas.
                 </blockquote>
-                <p>- Emmanuel Cañate</p>
+                <p>- Admin</p>
             </div>
         </section>
     </div>
